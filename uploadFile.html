@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Upload Interface</title>
+    <link rel="stylesheet" href="/uploadDes.css">
+</head>
+<body>
+    <div class="container">
+        <div class="upload-form">
+            <h2>Upload Files</h2>
+            <p class="subtitle">Please upload the required files to get the result</p>
+            
+            <form id="uploadForm">
+                <div class="form-section">
+                    <h3>User Info</h3>
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="text" placeholder="Role" required>
+                    <input type="date" required>
+                </div>
+
+                <div class="form-section">
+                    <h3>Performance Analysis</h3>
+                    <textarea placeholder="Additional Notes"></textarea>
+                </div>
+
+                <div class="form-section">
+                    <h3>Genetic Analysis</h3>
+                    <div  class="file-upload">
+                        <input type="text" placeholder="Upload Report.pdf" readonly  >
+                        <label class="browse-btn">
+                            Browse
+                            <input type="file" hidden id="pdfFile" accept="application/pdf" required>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+        
+        <div class="illustration">
+            <div class="illustration-circle">
+                <img src="image/2d flat modern made uploading a document to the AI agent.png" alt="Upload ">
+            </div>
+        </div>
+    </div>
+</form>
+<script src="/main.js"></script>
+</body>
+</html>

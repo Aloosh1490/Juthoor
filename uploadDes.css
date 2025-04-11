@@ -1,0 +1,149 @@
+:root {
+    --primary-color: #1eb8a0;
+    --dark-blue: #14213d;
+    --text-color: #333;
+    --light-gray: #f5f5f5;
+    --border-color: #e0e0e0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--light-gray);
+}
+
+.container {
+    display: flex;
+    background: white;
+    min-height: 100vh;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    /* align-items: center;  */
+}
+
+.upload-form {
+    flex: 1;
+    padding: 40px;
+    
+}
+
+h2 {
+    color: var(--dark-blue);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.form-section {
+    margin-bottom: 24px;
+}
+
+h3 {
+    color: var(--dark-blue);
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+input[type="text"],
+input[type="date"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+.file-upload {
+    display: flex;
+    gap: 12px;
+}
+
+.file-upload input[type="text"] {
+    flex: 1;
+    background: var(--light-gray);
+}
+
+.browse-btn {
+    background: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-block;
+}
+form{
+    height: 100%;
+    
+}
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition:  0.3s;
+}
+
+.submit-btn:hover {
+    background: #189e89;
+}
+
+.illustration {
+    flex: 1;
+    background: var(--dark-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.illustration-circle {
+    width: 300px;
+    height: 300px;
+    background: #2a3f6d;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.illustration img {
+    width: 50%;
+    height: 50%;
+    filter: brightness(0) invert(1);
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column-reverse;
+    }
+    
+    .illustration {
+        padding: 20px;
+    }
+    
+    .illustration-circle {
+        width: 200px;
+        height: 200px;
+    }
+}
