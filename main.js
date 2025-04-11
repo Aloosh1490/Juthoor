@@ -45,7 +45,7 @@ form.addEventListener('submit', async function(e) {
         
         // الخطوة 3: حفظ النتيجة والانتقال
         localStorage.setItem('document_result', JSON.stringify(result.analyzeResult.content));
-        // window.location.href = 'report.html';
+        window.location.href = 'report.html';
 
     } catch (error) {
         console.error('Error:', error);
