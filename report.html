@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نتيجة التحليل الجيني</title>
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2ecc71;
+      --error-color: #e74c3c;
+      --warning-color: #f39c12;
+    }
+    
+    body {
+      font-family: 'Tahoma', Arial, sans-serif;
+      line-height: 1.8;
+      padding: 20px;
+      background: #f5f7fa;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+    }
+    
+    h1, h2, h3 {
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    #resultText {
+      white-space: pre-wrap;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 5px solid var(--secondary-color);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 40px 0;
+    }
+    
+    .spinner {
+      border: 5px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 5px solid var(--primary-color);
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 20px 0;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .error {
+      color: var(--error-color);
+      border-left-color: var(--error-color) !important;
+    }
+    
+    .warning {
+      color: var(--warning-color);
+    }
+    
+    .patient-summary {
+      background: #e8f4fc;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 25px 0;
+      border: 1px solid #d0e3f1;
+    }
+    
+    .sport-recommendation {
+      background: #f0f8f0;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border-right: 4px solid var(--secondary-color);
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--primary-color);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 10px 5px;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #7f8c8d;
+      font-size: 14px;
+    }
+
+    .file-requirements {
+      background: #fff8e1;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border-left: 4px solid var(--warning-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>تقرير اللياقة الجينية</h1>
+      <div id="loadingState" class="loading">
+        <div class="spinner"></div>
+        <h2>جاري تحليل بياناتك الجينية...</h2>
+        <p>قد تستغرق هذه العملية بضع لحظات</p>
+      </div>
+      
+      <div id="resultContainer" class="hidden">
+        <h2>التوصيات الرياضية المخصصة لك</h2>
+        <div id="patientSummary" class="patient-summary"></div>
+        <div id="resultText"></div>
+        <div style="text-align: center; margin-top: 30px;">
+          <button class="btn" onclick="window.print()">طباعة التقرير</button>
+          <button class="btn" onclick="location.reload()">إعادة التحليل</button>
+        </div>
+      </div>
+      
+      <div id="errorContainer" class="hidden">
+        <h2 class="error">حدث خطأ في التحليل</h2>
+        <div id="errorText" class="error"></div>
+        
+        <div class="file-requirements">
+          <h3>متطلبات الملف الصحيح:</h3>
+          <ul>
+            <li>يجب أن يكون الملف بصيغة PDF</li>
+            <li>يجب أن يحتوي على نص قابل للتحديد (ليس صورة ممسوحة ضوئيًا)</li>
+            <li>الحجم الأقصى 50MB</li>
+            <li>غير محمي بكلمة مرور</li>
+          </ul>
+          <p>لتحويل الملفات الممسوحة ضوئيًا إلى نص، يمكنك استخدام أدوات مثل Adobe Scan أو OnlineOCR</p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+          <button class="btn" onclick="window.history.back()">العودة لصفحة الرفع</button>
+          <button class="btn" onclick="location.reload()">إعادة المحاولة</button>
+          <a class="btn" href="mailto:support@example.com">اتصل بالدعم الفني</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>© 2024 تقرير اللياقة الجينية - جميع الحقوق محفوظة</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const loadingElement = document.getElementById('loadingState');
+      const resultContainer = document.getElementById('resultContainer');
+      const errorContainer = document.getElementById('errorContainer');
+      const resultText = document.getElementById('resultText');
+      const patientSummary = document.getElementById('patientSummary');
+      const errorText = document.getElementById('errorText');
+      
+      try {
+        // 1. جلب البيانات من localStorage
+        const rawResult = localStorage.getItem('document_result');
+        console.log('بيانات التقرير من localStorage:', rawResult?.substring(0, 200) + '...');
+        
+        if (!rawResult || rawResult.length < 10) {
+          throw new Error('لا يوجد تقرير مخزن أو البيانات غير كافية. يرجى رفع الملف أولاً.');
+        }
+        
+        // 2. تحليل البيانات
+        const reportData = safeJsonParse(rawResult);
+        const fullText = getFullText(reportData);
+        console.log('النص المستخرج:', fullText?.substring(0, 200) + '...');
+        
+        if (!fullText || fullText.length < 50) {
+          console.error('بيانات التقرير غير صالحة:', reportData);
+          throw new Error('لم يتم استخراج النص من التقرير. قد يكون الملف غير مدعوم أو غير قابل للقراءة.');
+        }
+        
+        // 3. استخراج معلومات المريض
+        const patientInfo = extractPatientInfo(fullText);
+        console.log('معلومات المريض:', patientInfo);
+        
+        if (!patientInfo || !patientInfo.strength || !patientInfo.endurance) {
+          throw new Error('لا يمكن تحديد الخصائص الجينية الأساسية من التقرير');
+        }
+        
+        // 4. إظهار ملخص المريض
+        renderPatientSummary(patientInfo);
+        
+        // 5. إرسال للذكاء الاصطناعي
+        const analysisResult = await analyzeWithAI(fullText, patientInfo);
+        
+        if (!analysisResult || analysisResult.length < 20) {
+          throw new Error('لم يتم استلام تحليل كافي من الخدمة');
+        }
+        
+        // 6. عرض النتائج
+        loadingElement.classList.add('hidden');
+        resultText.innerHTML = formatAnalysisResult(analysisResult);
+        resultContainer.classList.remove('hidden');
+        
+      } catch (error) {
+        console.error('حدث خطأ:', error);
+        showError(error);
+      }
+    });
+    
+    // ===== الدوال المساعدة =====
+    
+    function safeJsonParse(jsonString) {
+      try {
+        return JSON.parse(jsonString);
+      } catch (e) {
+        console.warn('البيانات ليست JSON، يتم التعامل معها كنص:', jsonString);
+        return { fullText: jsonString };
+      }
+    }
+    
+    function getFullText(reportData) {
+      try {
+        if (!reportData) return null;
+        
+        // إذا كان النص موجودًا مباشرة
+        if (typeof reportData === 'string') {
+          return reportData.length > 50 ? reportData : null;
+        }
+        
+        // محاولات متعددة لاستخراج النص
+        const extractionAttempts = [
+          () => reportData.fullText,
+          () => reportData.content,
+          () => reportData.analyzeResult?.content,
+          () => reportData.pages?.map(p => p.lines?.map(l => l.content).join('\n')).join('\n\n'),
+          () => JSON.stringify(reportData, null, 2) // كحل أخير
+        ];
+        
+        for (const attempt of extractionAttempts) {
+          try {
+            const result = attempt();
+            if (result && result.length > 50) return result;
+          } catch (e) {
+            console.warn('فشل محاولة استخراج:', e);
+          }
+        }
+        
+        return null;
+      } catch (e) {
+        console.error('فشل استخراج النص:', e);
+        return null;
+      }
+    }
+    
+    function extractPatientInfo(text) {
+      if (!text) throw new Error('النص المقدم فارغ');
+      
+      const extractField = (pattern, defaultValue = 'غير محدد') => {
+        try {
+          const match = text.match(new RegExp(pattern, 'i'));
+          return match ? match[1].trim() : defaultValue;
+        } catch (e) {
+          return defaultValue;
+        }
+      };
+      
+      return {
+        name: extractField('Patient Name:\\s*([^\\n]+)', 'غير معروف'),
+        dob: extractField('D\\.O\\.B\\s*\\.:\\s*([^\\n]+)'),
+        strength: extractField('Strength Response:\\s*(\\w+)'),
+        endurance: extractField('Endurance Response:\\s*(\\w+)'),
+        recovery: extractField('Recovery Rate:\\s*(\\w+)'),
+        power: extractField('Power Response:\\s*(\\w+)'),
+        injuryRisks: {
+          knee: extractField('Knee Injury Risk:\\s*(\\w+)'),
+          achilles: extractField('Achilles Tendon Injury Risk:\\s*(\\w+)')
+        }
+      };
+    }
+    
+    function renderPatientSummary(info) {
+      patientSummary.innerHTML = `
+        <h3>ملخص البيانات الجينية</h3>
+        <p><strong>الاسم:</strong> ${info.name}</p>
+        ${info.dob ? `<p><strong>تاريخ الميلاد:</strong> ${info.dob}</p>` : ''}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+          <div><strong>القوة العضلية:</strong> ${info.strength}</div>
+          <div><strong>قدرة التحمل:</strong> ${info.endurance}</div>
+          <div><strong>معدل التعافي:</strong> ${info.recovery}</div>
+          <div><strong>القوة الانفجارية:</strong> ${info.power}</div>
+          <div><strong>مخاطر إصابة الركبة:</strong> ${info.injuryRisks.knee}</div>
+          <div><strong>مخاطر إصابة وتر العرقوب:</strong> ${info.injuryRisks.achilles}</div>
+        </div>
+      `;
+    }
+    
+    async function analyzeWithAI(fullText, patientInfo) {
+      try {
+        const prompt = `بناءً على التقرير الجيني التالي، يرجى تحليل البيانات وإعطاء توصيات رياضية:
+        
+        **معلومات المريض:**
+        - الاسم: ${patientInfo.name}
+        - القوة العضلية: ${patientInfo.strength}
+        - قدرة التحمل: ${patientInfo.endurance}
+        - معدل التعافي: ${patientInfo.recovery}
+        - القوة الانفجارية: ${patientInfo.power}
+        - مخاطر الإصابات: الركبة (${patientInfo.injuryRisks.knee}), وتر العرقوب (${patientInfo.injuryRisks.achilles})
+        
+        **المطلوب:**
+        1. حدد أفضل 3 رياضات مناسبة (المتوفرة في السعودية)
+        2. اشرح سبب كل توصية بناءً على البيانات الجينية
+        3. قدم نصائح تدريبية مخصصة
+        4. احذر من أي أنشطة قد تكون غير مناسبة
+        5. أعطِ ملخصًا باللغة العربية الفصحى
+        
+        **مقتطف من التقرير:**
+        ${fullText.substring(0, 3000)}... [مختصر]`;
+        
+        console.log('Prompt المرسل:', prompt.substring(0, 500) + '...');
+        
+        const response = await fetch('https://Akhle-m9alb72m-eastus2.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'api-key': '5Mo8GOQN8D87CgsVz88S1Pq2MePPZczx0PmfS3e0ZePFBLYzcsP5JQQJ99BDACHYHv6XJ3w3AAAAACOGGokZ'
+          },
+          body: JSON.stringify({
+            messages: [
+              {
+                role: "system",
+                content:" أنت خبير متخصص في تحليل التقارير الجينية وتقديم توصيات شخصية لرياضات مناسبة، بشرط أن تكون هذه الرياضات متوفرة في السعودية. سيتم تزويدك بتقرير جيني يحتوي على معلومات عن البنية الجسدية، القوة العضلية، قدرة التحمل، المرونة، والاستجابة للتمارين الهوائية وتمارين القوة.n/مهمتك:/nاستخرج بيانات المريض من التقرير. /nرشّح أفضل ثلاث رياضات مناسبة لجسمه وجيناته، بشرط أن تكون هذه الرياضات متوفرة في السعودية. /n فسّر سبب ترشيح كل رياضة./nفي النهاية، اعرض ملخص بيانات المريض كما استخرجتها من التقرير"
+              },
+              {
+                role: "user",
+                content: localStorage.getItem('document_result')
+              }
+            ],
+            max_tokens: 2000,
+            temperature: 0.7,
+            model: "gpt-4o"
+          })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => null);
+          console.error('تفاصيل خطأ API:', errorData);
+          throw new Error(errorData?.error?.message || 'فشل في تحليل البيانات من الخدمة');
+        }
+        
+        const data = await response.json();
+        return data.choices[0]?.message?.content || "لا توجد نتائج من التحليل";
+      } catch (e) {
+        console.error('خطأ في تحليل الذكاء الاصطناعي:', e);
+        throw new Error('فشل في الحصول على تحليل من الخدمة: ' + e.message);
+      }
+    }
+    
+    function formatAnalysisResult(text) {
+      if (!text) return '<p class="warning">لا توجد نتائج لعرضها</p>';
+      
+      // تحسين تنسيق النتيجة لعرضها بشكل جميل
+      return text
+        .replace(/\n\s*\n/g, '</div><div class="sport-recommendation">') // تقسيم الفقرات
+        .replace(/^/, '<div class="sport-recommendation">') // فتح أول div
+        .replace(/$/, '</div>') // إغلاق آخر div
+        .replace(/(\d+\.\s*رياضة\s*.*?:)/g, '<h3>$1</h3>') // عناوين الرياضات
+        .replace(/نصائح\s*تدريبية:/g, '<h4>نصائح تدريبية:</h4>')
+        .replace(/تحذيرات:/g, '<h4 class="warning">تحذيرات:</h4>');
+    }
+    
+    function showError(error) {
+      const loadingElement = document.getElementById('loadingState');
+      loadingElement.classList.add('hidden');
+      
+      errorText.innerHTML = `
+        <p>${error.message}</p>
+        <p class="warning">تفاصيل الخطأ للمطورين: ${error.stack || error}</p>
+      `;
+      
+      errorContainer.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
